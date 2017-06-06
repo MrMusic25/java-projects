@@ -1,6 +1,0 @@
- ----jGRASP exec: java Lab01
-Please enter the length of the lawn, in meters: 43
-Please enter the width of the lawn, in meters: 22
-At a rate of 2.3 meters per second, you will mow the entire lawn in 411.304347826087 seconds.
-
- ----jGRASP: operation complete.

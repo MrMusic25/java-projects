@@ -1,4 +1,0 @@
-Enter investment amount: 1000.56
-Enter annual interest rate in percentage: 4.25
-Enter number of years: 1
-Accumulated value is $1043.085
