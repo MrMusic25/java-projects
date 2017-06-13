@@ -16,6 +16,9 @@ public class Lab06_01 {
       // Next, check if fraction is improper
       if (numerator > denominator) {
          remainder = numerator / denominator;
-      }   
+         System.out.println(numerator + " / " + denominator + " is an improper fraction, it's mixed fraction is " + remainder + " + " + numerator + " / " + denominator);
+      }
+      else
+         System.out.println(numerator + " / " + denominator + " is a proper fraction");         
    }
 }
