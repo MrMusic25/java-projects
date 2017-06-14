@@ -20,7 +20,7 @@ public class Lab07_01 {
          boolean flag = true; // Used to exit loop
          
          for (int i = 2; i < (int)Math.floor(num / 2); i++) {
-            if (factor % i == 0) {
+            if (factor % i == 0 && factor != i) {
                flag = false; // Number is not prime, exit loop
                break;
             }      
