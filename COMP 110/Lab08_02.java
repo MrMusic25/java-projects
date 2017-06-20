@@ -5,7 +5,7 @@ public class Lab08_02 {
       System.out.println("-------------------------------------------");
       System.out.println(1 + "                                    " + findPi(1)); // Needed a custom line
       
-      for (int x = 101; x <= 901; x += 100) {
+      for (int x = 101; x <= (int)(Math.pow(2,32) / 2 - 1); x += 100) {
       System.out.println(x + "                                  " + findPi(x));
       }
    }
