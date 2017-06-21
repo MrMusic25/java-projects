@@ -16,10 +16,21 @@ public class Lab10_01 {
    }
    
    public static void printGrades(int grades[]) {
-      int best = grades[findHighestValue(grades)];
+      int best = grades[findHighestIndex(grades)];
       
       for (int j = 0; j < grades.length; j++) {
-         
+         System.out.printf("Student " + j + " score is " + grades[j] + " and grade is ");
+         // Oh boy, if statements...
+         if ( grades[j] >= best - 10)
+            System.out.printf("A\n");
+         else if ( grades[j] >= best - 20)
+            System.out.printf("B\n");
+         else if ( grades[j] >= best - 30)
+            System.out.printf("C\n");   
+         else if ( grades[j] >= best - 40)
+            System.out.printf("D\n");
+         else
+            System.out.printf("F\n");         
       }
    }
    
