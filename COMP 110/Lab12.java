@@ -40,6 +40,7 @@ public class Lab12 {
    }
    
    public static void outputTable(int number[]) {
+      System.out.printf("\n"); // Formatting
       for (int x = 8; x >=0; x--) {
          if (number[x] == 0)
             System.out.printf("H ");
