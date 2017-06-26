@@ -19,19 +19,35 @@ public class Lab12 {
       }
       
       // At this point, number is in correct range; ready for output
-      
+      int table[] = new int[9];
+      intToBinary(number, table);
+      outputTable(table);
    }
    
    public static void intToBinary(int input, int output[]) {
       int num = input, max = output.length, divisor = 0, i;
       for (i = max; i >= 0; i--) {
-         divisor = Math.pow(2,i);
-         if (num % divisor == 0) {
+         divisor = ((int)Math.pow(2,i));
+         if (divisor == 0)
+            break;
+         if (num >= divisor) {
             output[i] = 1; // LIFO, remember for later
             num -= divisor;
          }   
       }
       if (i == 1)
          output[0] = 1; // For odd numbers
+   }
+   
+   public static void outputTable(int number[]) {
+      for (int x = 8; x >=0; x--) {
+         if (number[x] == 0)
+            System.out.printf("H ");
+         else
+            System.out.printf("T ");
+         
+         if (x % 3 == 0)
+            System.out.printf("\n");      
+      }
    }
 }
