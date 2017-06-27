@@ -15,7 +15,7 @@ public class TicTacToe
          displayBoard(board);
          if(checkWin(board,'X'))
          {
-            System.out.println("COmputer Wins");
+            System.out.println("Computer Wins");
             System.exit(0);
          }
          if(checkTie(board))
@@ -70,6 +70,55 @@ public class TicTacToe
   // empty cell selected. Set the cell to 'X'
    public static void computerPlay(char[][]board)
    {
-      
+      int choice;
+      do {
+         choice = (int)(Math.random() * 9); // 0-8, each has a corresponding board piece
+         if (spotIsEmpty(choice,board))
+            continue;
+      } while(true);
+            
+   }
+   
+   public static boolean spotIsEmpty(int num, char board[][])
+   {
+      switch (num)
+      {
+         case 0:
+            if (board[0][0] != ' ')
+               return false;
+            break;   
+         case 1:
+            if (board[0][1] != ' ')
+               return false;
+            break;
+         case 2:
+            if (board[0][2] != ' ')
+               return false;
+            break;
+         case 3:
+            if (board[1][0] != ' ')
+               return false;
+            break;
+         case 4:
+            if (board[1][1] != ' ')
+               return false;
+            break;
+         case 5:
+            if (board[1][2] != ' ')
+               return false;
+            break;
+         case 6:
+            if (board[2][0] != ' ')
+               return false;
+            break;
+         case 7:
+            if (board[2][1] != ' ')
+               return false;
+            break;
+         case 8:
+            if (board[2][2] != ' ')
+               return false;
+      }
+      return true; // Only if spot is empty
    }
 }
