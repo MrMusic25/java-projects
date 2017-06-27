@@ -1,10 +1,11 @@
 import java.util.*;
 public class TicTacToe
 {
-   static Scanner in = new Scanner(System.in);
+   //static Scanner in = new Scanner(System.in);
    public static void main(String[] args)
    {
-      Scanner in = new Scanner(System.in);
+      //Scanner in = new Scanner(System.in);
+      // Never actually used this line, no harm in commenting it out
       char[][] board = new char[3][3];
       for(int i=0;i<3;i++)
          for(int j=0;j<3;++j)
@@ -77,9 +78,9 @@ public class TicTacToe
    // check for tie. If there no  empty cells, then it is a tie
    public static boolean checkTie(char[][] board)
    {
-      for (int i = 0; i < 2; i++)
+      for (int i = 0; i < 3; i++)
       {
-         for (int j = 0; j < 2; j++)
+         for (int j = 0; j < 3; j++)
          {
             if (board[i][j] == ' ')
                return false; 
