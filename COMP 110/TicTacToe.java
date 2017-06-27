@@ -47,23 +47,65 @@ public class TicTacToe
    // until an empty cell is selected. set the cell to 'O'
    public static void playerPlays(char[][] board)
    {
-      
+      int spot = -1;
+      Scanner input;
+      do
+      {
+        input = new Scanner(System.in);
+        System.out.printf("Enter an empty spot to place your move: ");
+        spot = input.nextInt();
+      } while (spotIsEmpty(spot,board));
+      setSpot(spot,'O',board);
    }
 
    // Check by row, column, and diagonals
    public static boolean checkWin(char[][] board,char ch)
    {
+      if ( (board[0][0] == ch && board[1][0] == ch && board[2][0] == ch) ||
+           (board[0][1] == ch && board[1][1] == ch && board[2][1] == ch) ||
+           (board[0][2] == ch && board[1][2] == ch && board[2][2] == ch) || /* Vertical*/
+           (board[0][0] == ch && board[0][1] == ch && board[0][2] == ch) ||
+           (board[1][0] == ch && board[1][1] == ch && board[1][2] == ch) ||
+           (board[2][0] == ch && board[2][1] == ch && board[2][2] == ch) || /* Horizontal */
+           (board[0][0] == ch && board[1][1] == ch && board[2][2] == ch) ||
+           (board[0][2] == ch && board[1][1] == ch && board[2][0] == ch) )  /* Diagonals */
+           return true; // I hope I never have to write something like this again
+      else
+         return false;     
    }
     
    // check for tie. If there no  empty cells, then it is a tie
    public static boolean checkTie(char[][] board)
    {
+      for (int i = 0; i < 2; i++)
+      {
+         for (int j = 0; j < 2; j++)
+         {
+            if (board[i][j] == ' ')
+               return false; 
+         }
+      }
+      return true;
    }
 
      
     // Display the board
    public static void displayBoard(char[][] board)
    {
+      System.out.printf("\n  -------------\n");
+      // Loop i controls formatting, j and k control output
+      int j = 0, k = 0;
+      for(int i = 0; i < 3; i++)
+      {
+         System.out.printf("  |   |   |\n  |");
+         for(k = 0; k < 3; k++)
+         {
+            System.out.printf(" " + board[j][k] + " |");
+         }
+         System.out.printf("\n  |   |   |\n  -------------\n");
+         j++;
+      }
+      System.out.printf("\n");
    }
   
   // Continue generating random values for row and col until an 
@@ -76,7 +118,7 @@ public class TicTacToe
          if (spotIsEmpty(choice,board))
             continue;
       } while(true);
-            
+      setSpot(choice,'X',board);    
    }
    
    public static boolean spotIsEmpty(int num, char board[][])
@@ -120,5 +162,39 @@ public class TicTacToe
                return false;
       }
       return true; // Only if spot is empty
+   }
+   
+   // Makes my life easier
+   public static void setSpot(int num, char spot, char board[][])
+   {
+      switch (num)
+      {
+         case 0:
+            board[0][0] = spot;
+            break;   
+         case 1:
+            board[0][1] = spot;
+            break; 
+         case 2:
+            board[0][2] = spot;
+            break; 
+         case 3:
+            board[1][0] = spot;
+            break; 
+         case 4:
+            board[1][1] = spot;
+            break; 
+         case 5:
+            board[1][2] = spot;
+            break; 
+         case 6:
+            board[2][0] = spot;
+            break; 
+         case 7:
+            board[2][1] = spot;
+            break; 
+         case 8:
+            board[2][2] = spot; 
+      }
    }
 }
