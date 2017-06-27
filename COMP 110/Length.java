@@ -3,11 +3,6 @@ public class Length {
    private int feet;
    private int inches;
    
-   public void Length() {
-      this.feet = 0;
-      this.inches = 0;
-   }
-   
    public void Length(int newFeet, int newInches) {
       this.feet = newFeet;
       this.inches = newInches;
@@ -15,6 +10,11 @@ public class Length {
          this.feet++;
          this.inches -= 12;
       }
+   }
+   
+   public void Length() {
+      this.feet = 0;
+      this.inches = 0;
    }
    
    public int getFeet() {
