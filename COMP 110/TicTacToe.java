@@ -52,10 +52,10 @@ public class TicTacToe
       do
       {
         input = new Scanner(System.in);
-        System.out.printf("Enter an empty spot to place your move: ");
+        System.out.printf("Enter an empty spot to place your move(1-9): ");
         spot = input.nextInt();
-      } while (spotIsEmpty(spot,board));
-      setSpot(spot,'O',board);
+      } while (!spotIsEmpty(spot - 1,board));
+      setSpot(spot - 1,'O',board);
    }
 
    // Check by row, column, and diagonals
@@ -92,17 +92,17 @@ public class TicTacToe
     // Display the board
    public static void displayBoard(char[][] board)
    {
-      System.out.printf("\n  -------------\n");
+      System.out.printf("\n  -------------------\n");
       // Loop i controls formatting, j and k control output
       int j = 0, k = 0;
       for(int i = 0; i < 3; i++)
       {
-         System.out.printf("  |   |   |\n  |");
+         System.out.printf("  |" + (1+(i*3)) + "    |" + (2+(i*3)) + "    |" + (3+(i*3)) + "    |\n  |");
          for(k = 0; k < 3; k++)
          {
-            System.out.printf(" " + board[j][k] + " |");
+            System.out.printf("  " + board[j][k] + "  |");
          }
-         System.out.printf("\n  |   |   |\n  -------------\n");
+         System.out.printf("\n  |     |     |     |\n  -------------------\n");
          j++;
       }
       System.out.printf("\n");
@@ -116,7 +116,7 @@ public class TicTacToe
       do {
          choice = (int)(Math.random() * 9); // 0-8, each has a corresponding board piece
          if (spotIsEmpty(choice,board))
-            continue;
+            break;
       } while(true);
       setSpot(choice,'X',board);    
    }
