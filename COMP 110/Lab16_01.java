@@ -5,7 +5,7 @@ public class Lab16_01 {
       // First, make sure args are valid and file is accessible
       if (args.length != 3) {
          System.out.println("ERROR: Not enough arguments to run! Please fix and run again!");
-         System.out.println("Usage: java Lab16 <file> <oldString> <newString>");
+         System.out.println("Usage: java Lab16_01 <inputFile> <oldString> <newString>");
          System.exit(1);
       }
       File inFile = new File(args[0]);
