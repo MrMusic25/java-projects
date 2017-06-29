@@ -1,4 +1,5 @@
-// Lab 13
+// Lab13
+// And Lab15
 public class Length {
    private int feet;
    private int inches;
@@ -71,4 +72,27 @@ public class Length {
       String output = this.feet + "' " + this.inches + "\"";
       return output;
    }   
+   
+   public int allInches() {
+      // Easy function that save lots of time
+      return this.inches + (12 * this.feet);
+   }
+   
+   public boolean equals(Length l) {
+      if (this.allInches() == l.allInches())
+         return true;
+      else
+         return false;   
+   }
+   
+   public int compareTo(Length otherLength) {
+      // -1 for less than, 0 for equals, 1 for greater than
+      if (this.equals(otherLength))
+         return 0;
+      
+      if (this.allInches() < otherLength.allInches())
+         return -1;
+      else
+         return 1; // Only other possible case      
+   }
 }
