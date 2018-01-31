@@ -59,6 +59,37 @@ public class Fraction {
 		}
 	}
 	
+	// Constructor for combining two fractions
+	public Fraction (Fraction a, Fraction b) {
+		if (isSameFormat(a,b)) {
+			switch (a.getFormat()) { // After I wrote this I realized I could do better, but it worked, so I left it alone. True story.
+				case 'i':
+					this.format = 'i';
+					this.num = a.getNum() + b.getNum();
+					this.den = 1.0;
+					break;
+				case 'd':
+					this.format = 'd';
+					this.num = a.getNum() + b.getNum();
+					this.den = 1.0;
+					break;
+				case 'f':
+					this.format = 'f';
+					if (a.getDen() == b.getDen()) {
+						this.den = a.getDen(); // They are equal in this instance, no worries
+						this.num = a.getNum() + b.getNum();
+					}
+					else {
+						this.num = (a.getNum() * b.getDen()) + (a.getDen() * b.getNum()); // Cross multiply
+						this.den = a.getDen() * b.getDen(); // Reducing fractions will be done later
+					}
+			}
+		}
+		else {
+			
+		}
+		this.input = "NULL"; // Gotta set all those variables. This one won't be needed though
+	}
 	// Based on string input, determine which format number is stored in
 	private char determineFormat(String in) {
 		// Check in following order: mixed -> fraction -> decimal -> int
@@ -103,6 +134,30 @@ public class Fraction {
 		return rtn.toString();
 	}
 	
+	// Returns greatest common factor of numerator and denominator, for reducing factors
+	private double getGCF() {
+		double a = this.num, b = this.den;
+		while (a != b) {
+			if ( a > b ) a -= b;
+			else b -= a;
+		}
+		return a; // Both should be the same value at this point
+	}
+	
+	// Given two formats (char), decide which format new number should be.
+	private char decideFormat(char a, char b) {
+		if (a == b)
+			return a;
+		else if ( a == 'd' || a == 'd' )
+			return 'd';
+		else
+			return 'i';
+	}
+	
+	// Returns true if both Fractions have the same format
+	private boolean isSameFormat(Fraction f) { return this.format == f.getFormat; }
+	private boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
+	
 	// Now for the public methods
 	public char getFormat() { return this.format; }
 	public double getNum() { return this.den; }
@@ -119,7 +174,33 @@ public class Fraction {
 				b.append(this.num/this.den);
 				break;
 			case 'f':
+				// Deal with numerator first
+				switch (this.numFormat) {
+					case 'i':
+					case 'n': // Just in case the program messed up, default to integer
+						b.append((int)(this.num);
+						break;
+					case 'd':
+						b.append(this.num);
+						break;
+				}
+				b.append('/');
 				
+				// Now, for the denominator
+				switch (this.denFormat) {
+					case 'i':
+					case 'n': // Just in case the program messed up, default to integer
+						b.append((int)(this.den);
+						break;
+					case 'd':
+						b.append(this.den);
+						break;
+				}
+				break; // Best practice
 		}
+		return b.toString();
 	}
+	
+	// Returns true if fraction is a fraction AND is improper; false in all other cases
+	public boolean isImproper() { return ( this.format == 'f' && this.num >= this.den ); }
 }
