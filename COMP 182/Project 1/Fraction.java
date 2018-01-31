@@ -57,39 +57,32 @@ public class Fraction {
 				}
 				break;
 		}
+		reduce();
 	}
 	
 	// Constructor for combining two fractions
 	public Fraction (Fraction a, Fraction b) {
-		if (isSameFormat(a,b)) {
-			switch (a.getFormat()) { // After I wrote this I realized I could do better, but it worked, so I left it alone. True story.
-				case 'i':
-					this.format = 'i';
-					this.num = a.getNum() + b.getNum();
-					this.den = 1.0;
-					break;
-				case 'd':
-					this.format = 'd';
-					this.num = a.getNum() + b.getNum();
-					this.den = 1.0;
-					break;
-				case 'f':
-					this.format = 'f';
-					if (a.getDen() == b.getDen()) {
-						this.den = a.getDen(); // They are equal in this instance, no worries
-						this.num = a.getNum() + b.getNum();
-					}
-					else {
-						this.num = (a.getNum() * b.getDen()) + (a.getDen() * b.getNum()); // Cross multiply
-						this.den = a.getDen() * b.getDen(); // Reducing fractions will be done later
-					}
+		this.format = decideFormat(a.getFormat(),b.getFormat());
+		if (this.format == 'f') {
+			this.numFormat = decideFormat(a.getNumFormat(),b.getNumFormat());
+			this.denFormat = decideFormat(a.getDenFormat(),b.getDenFormat());
+			if (a.getDen() == b.getDen()) {
+				this.den = a.getDen(); // They are equal in this instance, no worries
+				this.num = a.getNum() + b.getNum();
+			}
+			else {
+				this.num = (a.getNum() * b.getDen()) + (a.getDen() * b.getNum()); // Cross multiply
+				this.den = a.getDen() * b.getDen(); // Reducing fractions will be done later
 			}
 		}
 		else {
-			
+			this.num = a.getNum() + b.getNum();
+			this.den = 1.0; // Ints and doubles get same treatment here
 		}
 		this.input = "NULL"; // Gotta set all those variables. This one won't be needed though
+		reduce();
 	}
+	
 	// Based on string input, determine which format number is stored in
 	private char determineFormat(String in) {
 		// Check in following order: mixed -> fraction -> decimal -> int
@@ -154,6 +147,13 @@ public class Fraction {
 			return 'i';
 	}
 	
+	// Reduces the Fraction to the lowest number
+	private void reduce() {
+		double gcf = getGCF();
+		this.num /= gcf;
+		this.den /= gcf;
+	}
+	
 	// Returns true if both Fractions have the same format
 	private boolean isSameFormat(Fraction f) { return this.format == f.getFormat; }
 	private boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
@@ -203,4 +203,11 @@ public class Fraction {
 	
 	// Returns true if fraction is a fraction AND is improper; false in all other cases
 	public boolean isImproper() { return ( this.format == 'f' && this.num >= this.den ); }
+	
+	// Gets rid of improper fraction, and returns value taken away from fraction
+	public double reduceImproperFraction() {
+		double value = this.num / this.den;
+		this.num -= value * this.den;
+		return value;
+	}
 }
