@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Test {
 	public static void main (String args[]) {
-		String 
+		// Input strings
+		String input1, input2;
 	}
 }
