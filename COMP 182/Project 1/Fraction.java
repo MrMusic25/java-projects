@@ -10,6 +10,14 @@ public class Fraction {
 	private String input;                          // Location of the cleaned input string
 	
 	// Default constructor
+	public Fraction () {
+		this.format = 'n';
+		this.num = 1.0;
+		this.den = 1.0;
+		this.input = "NULL";
+	}
+	
+	// 4 constructors, and I use all of 'em...
 	public Fraction (String in) {
 		this.input = sanitizeInput(in); // Store value before working with it
 		
@@ -30,11 +38,11 @@ public class Fraction {
 				i++;
 		}
 		*/
-		
+		//System.out.println("Input string after sanitize: " + this.input);
 		this.format = determineFormat(input);
 		switch (this.format) {
 			case 'i':
-				this.num = (double)Integer.parseInt(this.input); // Could have used toDouble() here, but this will provide more accurate results
+				this.num = (double)(Integer.parseInt(this.input)); // Could have used toDouble() here, but this will provide more accurate results
 				this.den = 1.0;
 				break;
 			case 'd':
@@ -42,23 +50,25 @@ public class Fraction {
 				this.den = 1.0;
 				break;
 			case 'f':
-				int index = this.input.indexOf('/'); // Location of divisor
-				if ( isPresent(this.input,'.') ) {     // Numerator is a double
+				int index = this.input.indexOf("/"); // Location of divisor
+				String nums = this.input.substring(0,index), dens = this.input.substring(index,this.input.length());
+				//System.out.println("Nums: " + nums + ", Dens: " + dens);
+				if ( isPresent(nums,'.') ) {     // Numerator is a double
 					this.numFormat = 'd';
-					this.num = Double.parseDouble(this.input.substring(0,index-1));
+					this.num = Double.parseDouble(nums);
 				}
 				else {                                             // Else, it is an integer
 					this.numFormat = 'i';
-					this.num = (double)Integer.parseInt(this.input.substring(0,index-1));
+					this.num = (double)(Integer.parseInt(nums));
 				}
 				// Now do the same for denominator
-				if ( isPresent(this.input,'.') ) {     // Numerator is a double
+				if ( isPresent(dens,'.') ) {     // Numerator is a double
 					this.denFormat = 'd';
-					this.den = Double.parseDouble(this.input.substring(index+1));
+					this.den = Double.parseDouble(dens);
 				}
 				else {                                             // Else, it is an integer
 					this.denFormat = 'i';
-					this.den = (double)Integer.parseInt(this.input.substring(index+1));
+					this.den = (double)(Integer.parseInt(dens));
 				}
 				break;
 		}
@@ -67,6 +77,8 @@ public class Fraction {
 	
 	// Constructor for combining two fractions
 	public Fraction (Fraction a, Fraction b) {
+		System.out.println("a: num = " + a.getNum() + ", den = " + a.getDen());
+		System.out.println("b: num = " + b.getNum() + ", den = " + b.getDen());
 		this.format = decideFormat(a.getFormat(),b.getFormat());
 		if (this.format == 'f') {
 			this.numFormat = decideFormat(a.getNumFormat(),b.getNumFormat());
@@ -86,6 +98,16 @@ public class Fraction {
 		}
 		this.input = "NULL"; // Gotta set all those variables. This one won't be needed though
 		reduce();
+	}
+	
+	// Copies old Fraction to a new one
+	public Fraction (Fraction f) {
+		this.format = f.getFormat();
+		this.numFormat = f.getNumFormat();
+		this.denFormat = f.getDenFormat();
+		this.num = f.getNum();
+		this.den = f.getDen();
+		this.input = "NULL";
 	}
 	
 	// Based on string input, determine which format number is stored in
@@ -156,6 +178,8 @@ public class Fraction {
 	
 	// Reduces the Fraction to the lowest number
 	private void reduce() {
+		if (den == 1.0)
+			return;
 		double gcf = getGCF();
 		this.num /= gcf;
 		this.den /= gcf;
