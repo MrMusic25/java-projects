@@ -5,7 +5,7 @@
 
 public class Fraction {
 	private char format;                           // Indicates input format of Fraction. i=integer, d=double, f=fraction
-	private char numFormat = 'n', denFormat = 'n'; // For use with actual fractions only. For cases like 2.2/7 or 9.736/4.443. n indicates non-use
+	private char numFormat = 'i', denFormat = 'i'; // For use with actual fractions only. For cases like 2.2/7 or 9.736/4.443. n indicates non-use
 	private double num/*erator*/, den/*ominator*/; // Everything stored as double, format from above indicates output at the end of processing
 	private String input;                          // Location of the cleaned input string
 	
@@ -51,7 +51,7 @@ public class Fraction {
 				break;
 			case 'f':
 				int index = this.input.indexOf("/"); // Location of divisor
-				String nums = this.input.substring(0,index), dens = this.input.substring(index,this.input.length());
+				String nums = this.input.substring(0,index), dens = this.input.substring(index+1,this.input.length());
 				//System.out.println("Nums: " + nums + ", Dens: " + dens);
 				if ( isPresent(nums,'.') ) {     // Numerator is a double
 					this.numFormat = 'd';
@@ -73,12 +73,13 @@ public class Fraction {
 				break;
 		}
 		reduce();
+		//System.out.println(input + " is now: num = " + this.num + ", den = " + this.den);
 	}
 	
 	// Constructor for combining two fractions
 	public Fraction (Fraction a, Fraction b) {
-		System.out.println("a: num = " + a.getNum() + ", den = " + a.getDen());
-		System.out.println("b: num = " + b.getNum() + ", den = " + b.getDen());
+		//System.out.println("a: num = " + a.getNum() + ", den = " + a.getDen());
+		//System.out.println("b: num = " + b.getNum() + ", den = " + b.getDen());
 		this.format = decideFormat(a.getFormat(),b.getFormat());
 		if (this.format == 'f') {
 			this.numFormat = decideFormat(a.getNumFormat(),b.getNumFormat());
@@ -178,8 +179,9 @@ public class Fraction {
 	
 	// Reduces the Fraction to the lowest number
 	private void reduce() {
-		if (den == 1.0)
-			return;
+		if (this.format == 'f' || this.den == 1.0) {
+			this.format = this.numFormat;
+		}
 		double gcf = getGCF();
 		this.num /= gcf;
 		this.den /= gcf;
@@ -191,7 +193,7 @@ public class Fraction {
 	
 	// Now for the public methods
 	public char getFormat() { return this.format; }
-	public double getNum() { return this.den; }
+	public double getNum() { return this.num; }
 	public double getDen() { return this.den; }
 	public char getNumFormat() { return this.numFormat; }
 	public char getDenFormat() { return this.denFormat; }

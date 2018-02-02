@@ -50,16 +50,22 @@ public class Test {
 		if ( i1 == 'm' && i2 == 'm') {
 			e = new Fraction(a,c);
 			f = new Fraction(b,d);
+			if (f.isImproper())
+				e.addValue(f.reduceImproperFraction());
 			s.append(e.toString() + " " + f.toString());
 		}
 		else if ( i1 == 'm' && i2 == 'f') {
 			e = new Fraction(a); 
 			f = new Fraction(b,c);
+			if (f.isImproper())
+				e.addValue(f.reduceImproperFraction());
 			s.append(e.toString() + " " + f.toString());
 		}
 		else if ( i1 == 'f' && i2 == 'm') {
 			e = new Fraction(c); 
 			f = new Fraction(a,d);
+			if (f.isImproper())
+				e.addValue(f.reduceImproperFraction());
 			s.append(e.toString() + " " + f.toString());
 		}
 		else {
