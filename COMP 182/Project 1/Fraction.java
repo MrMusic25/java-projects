@@ -18,42 +18,47 @@ public class Fraction {
 			System.out.println("ERROR: Input was not recognized!");
 			System.exit(1);
 		}
-		int i = 0;
+		//int i = 0;
+		//char c;
+		
+		/* No idea what this section is supposed to accomplish, and it won't compile. Commenting out.
 		while ( i < this.input.length() ) {
-			if (isDigit(this.input.charAt(i)))
+			c = this.input.charAt(i);
+			if (isDigit(c))
 				continue;
 			else
 				i++;
 		}
+		*/
 		
 		this.format = determineFormat(input);
 		switch (this.format) {
 			case 'i':
-				this.num = (double)this.input.toInt(); // Could have used toDouble() here, but this will provide more accurate results
+				this.num = (double)Integer.parseInt(this.input); // Could have used toDouble() here, but this will provide more accurate results
 				this.den = 1.0;
 				break;
 			case 'd':
-				this.num = this.input.toDouble();
+				this.num = Double.parseDouble(this.input);
 				this.den = 1.0;
 				break;
 			case 'f':
 				int index = this.input.indexOf('/'); // Location of divisor
 				if ( isPresent(this.input,'.') ) {     // Numerator is a double
 					this.numFormat = 'd';
-					this.num = this.input.substring(0,index-1).toDouble();
+					this.num = Double.parseDouble(this.input.substring(0,index-1));
 				}
 				else {                                             // Else, it is an integer
 					this.numFormat = 'i';
-					this.num = (double)this.input.substring(0,index-1).toInt();
+					this.num = (double)Integer.parseInt(this.input.substring(0,index-1));
 				}
 				// Now do the same for denominator
 				if ( isPresent(this.input,'.') ) {     // Numerator is a double
 					this.denFormat = 'd';
-					this.den = this.input.substring(index+1).toDouble();
+					this.den = Double.parseDouble(this.input.substring(index+1));
 				}
 				else {                                             // Else, it is an integer
 					this.denFormat = 'i';
-					this.den = (double)this.input.substring(index+1).toInt();
+					this.den = (double)Integer.parseInt(this.input.substring(index+1));
 				}
 				break;
 		}
@@ -110,16 +115,18 @@ public class Fraction {
 		// Get rid of leading/trailing "bad characters"
 		int l = rtn.length(); // Needs to be dynamic, as characters will be deleted
 		for (int i = 0; i < l; ) {
-			if ( (isDigit(rtn.charAt(i))) ) 
+			if ( Character.isDigit(rtn.charAt(i)) ) { // Why couldn't they just use Char? Ugh...
 				i++;
 				continue;
+			}
+			
 			for (int j = 0; j < allowed.length; j++) {
 				if ( rtn.charAt(i) == allowed[j] ) {
 					i++;
 					continue;
 				}
 				if ( j == allowed.length - 1) {
-					rtn.delete(i);
+					rtn = rtn.delete(i,i);
 					l--; // Otherwise we would get an out of bounds error
 				}
 			}
@@ -155,7 +162,7 @@ public class Fraction {
 	}
 	
 	// Returns true if both Fractions have the same format
-	private boolean isSameFormat(Fraction f) { return this.format == f.getFormat; }
+	private boolean isSameFormat(Fraction f) { return this.format == f.getFormat(); }
 	private boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
 	
 	// Now for the public methods
@@ -165,7 +172,7 @@ public class Fraction {
 	public char getNumFormat() { return this.numFormat; }
 	public char getDenFormat() { return this.denFormat; }
 	public String toString() {
-		StringBuilder b;
+		StringBuilder b = new StringBuilder();
 		switch (this.format) {
 			case 'i':
 				b.append((int)(this.num/this.den));
@@ -178,7 +185,7 @@ public class Fraction {
 				switch (this.numFormat) {
 					case 'i':
 					case 'n': // Just in case the program messed up, default to integer
-						b.append((int)(this.num);
+						b.append((int)(this.num));
 						break;
 					case 'd':
 						b.append(this.num);
@@ -190,7 +197,7 @@ public class Fraction {
 				switch (this.denFormat) {
 					case 'i':
 					case 'n': // Just in case the program messed up, default to integer
-						b.append((int)(this.den);
+						b.append((int)(this.den));
 						break;
 					case 'd':
 						b.append(this.den);
@@ -209,5 +216,10 @@ public class Fraction {
 		double value = this.num / this.den;
 		this.num -= value * this.den;
 		return value;
+	}
+
+	// Adds a double value to the numerator, to go with the previous method
+	public void addValue(double d) {
+		this.num += d;
 	}
 }
