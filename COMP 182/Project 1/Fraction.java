@@ -47,6 +47,7 @@ public class Fraction {
 				break;
 			case 'd':
 				this.num = Double.parseDouble(this.input);
+				this.numFormat = 'd';
 				this.den = 1.0;
 				break;
 			case 'f':

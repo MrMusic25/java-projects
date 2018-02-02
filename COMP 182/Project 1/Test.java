@@ -90,17 +90,4 @@ public class Test {
 		else
 			return 'i';
 	}
-	
-	// Copied from Fraction class because it suited my purposes
-	public static boolean isPresent(String in, char c) { 
-		for (int i = 0; i < in.length(); i++) 
-			if (in.charAt(i) == c) return true;
-		return false;
-	}
-	
-	public static boolean isArray(Fraction f) {
-		Class cls = f.getClass();
-		boolean arr = cls.isArray();
-		return arr;
-	}
 }
