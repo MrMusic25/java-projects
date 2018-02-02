@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Scanner;
 public class TicTacToe
 {
    //static Scanner in = new Scanner(System.in);
@@ -25,9 +25,9 @@ public class TicTacToe
             System.exit(0);
          }
          playerPlays(board);
-         displayBoard(board);
          if(checkWin(board,'O'))
         {
+            displayBoard(board);
             System.out.println("Player Wins");
             System.exit(0);
          }
@@ -55,7 +55,7 @@ public class TicTacToe
         input = new Scanner(System.in);
         System.out.printf("Enter an empty spot to place your move(1-9): ");
         spot = input.nextInt();
-      } while (!spotIsEmpty(spot - 1,board));
+      } while (!spotIsEmpty(spot - 1,board)||spot>9||spot<1);
       setSpot(spot - 1,'O',board);
    }
 
@@ -95,7 +95,7 @@ public class TicTacToe
    {
       System.out.printf("\n  -------------------\n");
       // Loop i controls formatting, j and k control output
-      int j = 0, k = 0;
+      int j = 0, k;
       for(int i = 0; i < 3; i++)
       {
          System.out.printf("  |" + (1+(i*3)) + "    |" + (2+(i*3)) + "    |" + (3+(i*3)) + "    |\n  |");
@@ -113,13 +113,7 @@ public class TicTacToe
   // empty cell selected. Set the cell to 'X'
    public static void computerPlay(char[][]board)
    {
-      int choice;
-      do {
-         choice = (int)(Math.random() * 9); // 0-8, each has a corresponding board piece
-         if (spotIsEmpty(choice,board))
-            break;
-      } while(true);
-      setSpot(choice,'X',board);    
+        setSpot(checkForWinOpportunity(board),'X',board);    
    }
    
    public static boolean spotIsEmpty(int num, char board[][])
@@ -197,5 +191,137 @@ public class TicTacToe
          case 8:
             board[2][2] = spot; 
       }
+   }
+   
+   public static int checkForWinOpportunity(char board[][]){
+       
+       boolean firstRound=true;
+       int[] sums = new int[8];
+       int[][] value = new int[3][3];
+       for(int i=0;i<3;i++)//we assign a value in each box
+         for(int j=0;j<3;++j)
+            if(board[i][j]=='O'){//-3 if it has an O
+                value[i][j]=-3;
+                firstRound=false;
+            }else if(board[i][j]=='X'){//1 id it has an X
+                value[i][j]=1;
+                firstRound=false;
+            }else value[i][j]=0;//0 if it is empty
+       int max=0;//max(0-8) is the int that tells the computer which box it should pick
+       if(firstRound){//if it is the first round computer picks a spot at random
+           max=(int) Math.floor(Math.random() * 9);
+       }else {//we calculate the sum of every row,column and diagonal
+       //the higher the sum, the more Xs are already there
+       //so it is better for the computer to place its X in that row/column/diagonal
+       sums[0]=value[0][0]+value[0][1]+value[0][2];
+       sums[1]=value[1][0]+value[1][1]+value[1][2];
+       sums[2]=value[2][0]+value[2][1]+value[2][2];
+       sums[3]=value[0][0]+value[1][0]+value[2][0];
+       sums[4]=value[0][1]+value[1][1]+value[2][1];
+       sums[5]=value[0][2]+value[1][2]+value[2][2];
+       sums[6]=value[0][0]+value[1][1]+value[2][2];
+       sums[7]=value[0][2]+value[1][1]+value[2][0];
+       
+       int i=1;
+       while(i<8){
+           if(sums[i]>=sums[max]) max=i;
+           i++;
+       }//max now has the row/column/diagonal id, but each of those has three boxes
+       max=Choose(max,board);
+       if(max==-1){//if there were no empty remaning boxes we pick one at random
+           do{
+               max=(int) Math.floor(Math.random() * 9);
+           }while(!spotIsEmpty(max,board));
+       }
+       }
+       return max;
+   }   
+   
+   //Choose helps us find the specific box that the computer should pick
+   public static int Choose(int max, char board[][]){
+        int[][] array = new int[3][2];
+       switch (max)//max is the "id" of the row/column/diagonal that we have chosen
+      {//array holds the id of each box contained in the row/column/diagonal
+           //each row is two numbers that indicate that
+         case 0:
+            array[0][0]=0;
+            array[0][1]=0;//e.g. array's first row =0 0 ->box id =0 => the first box 
+            array[1][0]=0;
+            array[1][1]=1;
+            array[2][0]=0;
+            array[2][1]=2;
+            break;   
+         case 1:
+            array[0][0]=1;
+            array[0][1]=0;
+            array[1][0]=1;
+            array[1][1]=1;
+            array[2][0]=1;
+            array[2][1]=2;
+            break; 
+         case 2:
+            array[0][0]=2;
+            array[0][1]=0;
+            array[1][0]=2;
+            array[1][1]=1;
+            array[2][0]=2;
+            array[2][1]=2;
+            break; 
+         case 3:
+            array[0][0]=0;
+            array[0][1]=0;
+            array[1][0]=1;
+            array[1][1]=0;
+            array[2][0]=2;
+            array[2][1]=0;
+            break; 
+         case 4:
+            array[0][0]=0;
+            array[0][1]=1;
+            array[1][0]=1;
+            array[1][1]=1;
+            array[2][0]=2;
+            array[2][1]=1;
+            break; 
+         case 5:
+            array[0][0]=0;
+            array[0][1]=2;
+            array[1][0]=1;
+            array[1][1]=2;
+            array[2][0]=2;
+            array[2][1]=2;
+            break; 
+         case 6:
+            array[0][0]=0;
+            array[0][1]=0;
+            array[1][0]=1;
+            array[1][1]=1;
+            array[2][0]=2;
+            array[2][1]=2;
+            break; 
+         case 7:
+            array[0][0]=0;
+            array[0][1]=2;
+            array[1][0]=1;
+            array[1][1]=1;
+            array[2][0]=2;
+            array[2][1]=0;
+            break; 
+      }
+       boolean error=true;//error will indicate if there are no empty boxes left where we looked
+       int[] choice={0,0};
+       for (int i=0; i<3;i++){
+           if(board[array[i][0]][array[i][1]]==' ') {
+               choice[0]=array[i][0];
+               choice[1]=array[i][1];
+               error=false;//if we find at least one empty box we have avoided the error
+           }
+       }       
+       int box;
+       if(error){
+           box=-1;//we use a negative number because such box id does not exist
+       }else{box = choice[0]*3+choice[1];}
+       //we translate the choice array to an actual number which is the id of the box 
+       return box;
    }
 }
