@@ -174,7 +174,7 @@ public class Fraction {
 	
 	// Returns greatest common factor of numerator and denominator, for reducing factors
 	private double getGCF() {
-		double a = this.num, b = this.den;
+		double a = Math.abs(this.num), b = Math.abs(this.den);
 		//System.out.println("Entering GCF while loop");
 		while (a != b) {
 			if ( a > b ) a -= b;
@@ -197,6 +197,10 @@ public class Fraction {
 	private void reduce() {
 		if (/*this.format == 'f' ||*/ this.den == 1.0) {
 			this.numFormat = this.format;
+		}
+		if ( this.den < 0 ) { // Allows proper outputting of negative sign in case of negative denominator
+			this.num *= -1.0;
+			this.den *= -1.0;
 		}
 		if (this.format != 'f')
 			return; // Leave if not an actual fraction. Creates endless loop otherwise
