@@ -1,6 +1,9 @@
 /*
 	Name: Kyle Krattiger
 	Class: COMP 182
+	Part 1: f3afecf
+	
+	Function: Create a Fraction object
 */
 
 public class Fraction {
@@ -39,7 +42,8 @@ public class Fraction {
 		}
 		*/
 		//System.out.println("Input string after sanitize: " + this.input);
-		this.format = determineFormat(input);
+		this.format = determineFormat(this.input);
+		//System.out.println("Format at this point: " + this.format);
 		switch (this.format) {
 			case 'i':
 				this.num = (double)(Integer.parseInt(this.input)); // Could have used toDouble() here, but this will provide more accurate results
@@ -51,6 +55,7 @@ public class Fraction {
 				this.den = 1.0;
 				break;
 			case 'f':
+				//System.out.println("Parsing as a fraction");
 				int index = this.input.indexOf("/"); // Location of divisor
 				String nums = this.input.substring(0,index), dens = this.input.substring(index+1,this.input.length());
 				//System.out.println("Nums: " + nums + ", Dens: " + dens);
@@ -71,10 +76,11 @@ public class Fraction {
 					this.denFormat = 'i';
 					this.den = (double)(Integer.parseInt(dens));
 				}
+				//System.out.println("Format at this point: " + this.format);
 				break;
 		}
 		reduce();
-		//System.out.println(input + " is now: num = " + this.num + ", den = " + this.den);
+		//System.out.println(input + " is now: format = " + this.format + " num = " + this.num + ", den = " + this.den);
 	}
 	
 	// Constructor for combining two fractions
@@ -114,20 +120,26 @@ public class Fraction {
 	
 	// Based on string input, determine which format number is stored in
 	private char determineFormat(String in) {
-		// Check in following order: mixed -> fraction -> decimal -> int
-		if ( isPresent(in,'/') )
+		// Check in following order: fraction -> decimal -> int
+		if ( isPresent(in,'/') ) {
 			return 'f';
+		}
 		else if ( isPresent(in,'.') )
 			return 'd';
 		else
 			// Assume int. Sanitization would have kept it from getting this far
+			//System.out.println("Assuming int...");
 			return 'i';
 	}
 	
 	// Returns true if the char is present in the string. Make sure to sanitize input, or this will return false positive!
 	private boolean isPresent(String in, char c) {
-		for (int i = 0; i < in.length(); i++) 
-			if (in.charAt(i) == c) return true;
+		for (int i = 0; i < in.length(); i++) {
+			if (in.charAt(i) == c) {
+				//System.out.println(c + " was found in " + in);
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -136,6 +148,7 @@ public class Fraction {
 		StringBuilder rtn = new StringBuilder(in.trim());   // Create a StringBuilder with the orignal string, minus whitespace
 		char allowed[] = { '/', '.', '-' };                 // List of allowed characters
 		
+		//System.out.println("Sanitizing... Input is " + rtn.toString() + "...");
 		// Get rid of leading/trailing "bad characters"
 		int l = rtn.length(); // Needs to be dynamic, as characters will be deleted
 		for (int i = 0; i < l; ) {
@@ -146,6 +159,7 @@ public class Fraction {
 			
 			for (int j = 0; j < allowed.length; j++) {
 				if ( rtn.charAt(i) == allowed[j] ) {
+					//System.out.println("Found allowed char: " + allowed[j] + " at pos: " + j);
 					i++;
 					continue;
 				}
@@ -161,6 +175,7 @@ public class Fraction {
 	// Returns greatest common factor of numerator and denominator, for reducing factors
 	private double getGCF() {
 		double a = this.num, b = this.den;
+		//System.out.println("Entering GCF while loop");
 		while (a != b) {
 			if ( a > b ) a -= b;
 			else b -= a;
@@ -172,7 +187,7 @@ public class Fraction {
 	private char decideFormat(char a, char b) {
 		if (a == b)
 			return a;
-		else if ( a == 'd' || a == 'd' )
+		else if ( a == 'd' || b == 'd' )
 			return 'd';
 		else
 			return 'i';
@@ -180,9 +195,11 @@ public class Fraction {
 	
 	// Reduces the Fraction to the lowest number
 	private void reduce() {
-		if (this.format == 'f' || this.den == 1.0) {
-			this.format = this.numFormat;
+		if (/*this.format == 'f' ||*/ this.den == 1.0) {
+			this.numFormat = this.format;
 		}
+		if (this.format != 'f')
+			return; // Leave if not an actual fraction. Creates endless loop otherwise
 		double gcf = getGCF();
 		this.num /= gcf;
 		this.den /= gcf;
@@ -200,6 +217,7 @@ public class Fraction {
 	public char getDenFormat() { return this.denFormat; }
 	public String toString() {
 		StringBuilder b = new StringBuilder();
+		//b.append( this.format + " " ); // For debugging
 		switch (this.format) {
 			case 'i':
 				b.append((int)(this.num/this.den));
@@ -218,17 +236,19 @@ public class Fraction {
 						b.append(this.num);
 						break;
 				}
-				b.append('/');
 				
 				// Now, for the denominator
-				switch (this.denFormat) {
-					case 'i':
-					case 'n': // Just in case the program messed up, default to integer
-						b.append((int)(this.den));
-						break;
-					case 'd':
-						b.append(this.den);
-						break;
+				if (this.den != 1.0) { // Don't attach denominator if a fraction
+					b.append('/');
+					switch (this.denFormat) {
+						case 'i':
+						case 'n': // Just in case the program messed up, default to integer
+							b.append((int)(this.den));
+							break;
+						case 'd':
+							b.append(this.den);
+							break;
+					}
 				}
 				break; // Best practice
 		}

@@ -1,6 +1,6 @@
 public class Rectangle extends Shape {
 	// Private variables
-	int length, width;
+	private int length, width;
 	
 	// Constructors
 	public Rectangle() {
