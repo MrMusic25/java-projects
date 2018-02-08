@@ -2,6 +2,8 @@
 	Name: Kyle Krattiger
 	Class: COMP 182
 	Part 1: f3afecf
+	Part 2: 
+	   Changes in part 2 signified by //p2
 	
 	Function: Create a Fraction object
 */
@@ -25,22 +27,9 @@ public class Fraction {
 		this.input = sanitizeInput(in); // Store value before working with it
 		
 		// Make sure String is not empty, ergo no numeric input
-		if (this.input.isEmpty()) {
-			System.out.println("ERROR: Input was not recognized!");
-			System.exit(1);
-		}
-		//int i = 0;
-		//char c;
-		
-		/* No idea what this section is supposed to accomplish, and it won't compile. Commenting out.
-		while ( i < this.input.length() ) {
-			c = this.input.charAt(i);
-			if (isDigit(c))
-				continue;
-			else
-				i++;
-		}
-		*/
+		if (this.input.isEmpty())
+			exitInError();
+
 		//System.out.println("Input string after sanitize: " + this.input);
 		this.format = determineFormat(this.input);
 		//System.out.println("Format at this point: " + this.format);
@@ -57,7 +46,7 @@ public class Fraction {
 			case 'f':
 				//System.out.println("Parsing as a fraction");
 				int index = this.input.indexOf("/"); // Location of divisor
-				String nums = this.input.substring(0,index), dens = this.input.substring(index+1,this.input.length());
+				String nums = this.input.substring(0,index).trim(), dens = this.input.substring(index+1,this.input.length()).trim(); //p2
 				//System.out.println("Nums: " + nums + ", Dens: " + dens);
 				if ( isPresent(nums,'.') ) {     // Numerator is a double
 					this.numFormat = 'd';
@@ -148,7 +137,6 @@ public class Fraction {
 		StringBuilder rtn = new StringBuilder(in.trim());   // Create a StringBuilder with the orignal string, minus whitespace
 		char allowed[] = { '/', '.', '-' };                 // List of allowed characters
 		
-		//System.out.println("Sanitizing... Input is " + rtn.toString() + "...");
 		// Get rid of leading/trailing "bad characters"
 		int l = rtn.length(); // Needs to be dynamic, as characters will be deleted
 		for (int i = 0; i < l; ) {
@@ -169,8 +157,37 @@ public class Fraction {
 				}
 			}
 		}
+		
+		//p2
+		// Check for incorrect use of spaces, or decimal input
+		for (int i = 0, z = rtn.length(); i < z; i++) {
+			switch (rtn.charAt(i)) {
+				case '-':
+					if (rtn.charAt(i+1) == ' ') {
+						rtn.delete(i+1,i+1);
+						z--;
+					}
+					if ( !Character.isDigit(rtn.charAt(i+1)) )
+						exitInError(); // Exit if the next char is not a number
+					
+					break;
+				case '.':
+					if (i == 0 || i == z)
+						exitInError(); // in case of input like '.2'
+					if ( !(Character.isDigit(rtn.charAt(i-1)) && Character.isDigit(rtn.charAt(i+1))) ) 
+						exitInError();
+					// Else, assume everything is good
+					break;
+				default:
+					doNothing();
+					break;
+			}
+		}
 		return rtn.toString();
 	}
+	
+	// Java provides no way of a do-nothing statement like Bash or C++, so I made my own
+	private void doNothing() { return; } //p2
 	
 	// Returns greatest common factor of numerator and denominator, for reducing factors
 	private double getGCF() {
@@ -207,6 +224,12 @@ public class Fraction {
 		double gcf = getGCF();
 		this.num /= gcf;
 		this.den /= gcf;
+	}
+	
+	// Exits (according to spec) whenever called
+	private void exitInError() { //p2
+		System.out.println("Error in parsing: NULL!");
+		System.exit(0);
 	}
 	
 	// Returns true if both Fractions have the same format
