@@ -1,21 +1,51 @@
 /*
 	Name: Kyle Krattiger
 	Class: COMP 182
+	Part 1: f3afecf
+	Part 2: 
+	   Changes in part 2 signified by //p2
+	   
+	Purpose: Add two numbers using the Fraction class
 */
 import java.util.*;
 
 public class Test {
 	public static void main (String args[]) {
 		// Input strings
-		String input1, input2;
+		String input1, input2, initial; //p2
 		Fraction a, b, c, d, e, f; // Hopefully no one will see this during an interview... I swear I've improved my habits since writing this! I was very tired that night!
-		StringBuilder s = new StringBuilder(); // Will contain the output
 		char i1 = 'n', i2 = 'n'; // Lets program know whether to use array or normal var
-		Scanner input = new Scanner(System.in);
-		System.out.printf("Enter the first number and press [Enter]: ");
-		input1 = input.nextLine();
-		input1 = input1.trim();
+		StringBuilder s = new StringBuilder(); // Will contain the output
 		
+		// First, check to see if input was given as argument
+		if (args.length != 0) { //p2
+			StringBuilder init = new StringBuilder();
+			for (int i = 0; i < args.length; i++)
+				init.append(args[i]);
+			initial = init.toString();
+		}
+		else { // Else, ask for input
+			Scanner input = new Scanner(System.in);
+			System.out.printf("Enter the addition string and press [Enter]: "); //p2
+			initial = input.nextLine();
+		}
+		initial = initial.trim();
+		
+		//p2
+		// Make sure '+' is present before moving on
+		if (!isPresent(initial,'+')) {
+			System.out.println("Error in parsing: NULL!");
+			System.exit(0);
+		}
+		
+		// split string into two parts, to work with program already written for part 1
+		int loc = initial.indexOf('+');
+		input1 = initial.substring(0,loc);
+		input2 = initial.substring(loc+1,initial.length());
+		input1 = input1.trim();
+		input2 = input2.trim();
+		
+		// Get the first fraction (a,b) ready
 		if (processString(input1) == 'm') {
 			// Mixed fraction
 			int x = input1.indexOf(' '); // Stores index of the space
@@ -28,12 +58,7 @@ public class Test {
 			b = new Fraction();
 		}
 		
-		// Repeat the process for second input
-		input = new Scanner(System.in);
-		System.out.printf("Enter the second number and press [Enter]: ");
-		input2 = input.nextLine();
-		input2 = input2.trim();
-		
+		// Now, repeat for fraction 2 (c,d)
 		if (processString(input2) == 'm') {
 			// Mixed fraction
 			int y = input1.indexOf(' '); // Stores index of the space
