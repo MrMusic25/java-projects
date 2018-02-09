@@ -2,7 +2,7 @@
 	Name: Kyle Krattiger
 	Class: COMP 182
 	Part 1: f3afecf
-	Part 2: 
+	Part 2: c73c0be
 	   Changes in part 2 signified by //p2
 	   
 	Purpose: Add two numbers using the Fraction class

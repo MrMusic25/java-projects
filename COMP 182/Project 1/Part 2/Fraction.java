@@ -2,10 +2,10 @@
 	Name: Kyle Krattiger
 	Class: COMP 182
 	Part 1: f3afecf
-	Part 2: 
+	Part 2: c73c0be
 	   Changes in part 2 signified by //p2
 	
-	Function: Create a Fraction object
+	Purpose: Create an object 'Fraction' that can be either an int, a double, or a 'x/y' format fraction
 */
 
 public class Fraction {
