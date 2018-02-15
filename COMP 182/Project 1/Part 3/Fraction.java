@@ -4,15 +4,17 @@
 	Part 1: f3afecf
 	Part 2: c73c0be
 	   Changes in part 2 signified by //p2
+	   Part 3 signified by //p3
 	
 	Purpose: Create an object 'Fraction' that can be either an int, a double, or a 'x/y' format fraction
 */
 
 public class Fraction {
-	private char format;                           // Indicates input format of Fraction. i=integer, d=double, f=fraction
-	private char numFormat = 'i', denFormat = 'i'; // For use with actual fractions only. For cases like 2.2/7 or 9.736/4.443. n indicates non-use
-	private double num/*erator*/, den/*ominator*/; // Everything stored as double, format from above indicates output at the end of processing
-	private String input;                          // Location of the cleaned input string
+	//p3 - changed most instances of 'private' to 'protected'
+	protected char format;                           // Indicates input format of Fraction. i=integer, d=double, f=fraction
+	protected char numFormat = 'i', denFormat = 'i'; // For use with actual fractions only. For cases like 2.2/7 or 9.736/4.443. n indicates non-use
+	protected double num/*erator*/, den/*ominator*/; // Everything stored as double, format from above indicates output at the end of processing
+	protected String input;                          // Location of the cleaned input string
 	
 	// Default constructor
 	public Fraction () {
@@ -122,7 +124,7 @@ public class Fraction {
 	}
 	
 	// Returns true if the char is present in the string. Make sure to sanitize input, or this will return false positive!
-	private boolean isPresent(String in, char c) {
+	protected boolean isPresent(String in, char c) {
 		for (int i = 0; i < in.length(); i++) {
 			if (in.charAt(i) == c) {
 				//System.out.println(c + " was found in " + in);
@@ -187,10 +189,10 @@ public class Fraction {
 	}
 	
 	// Java provides no way of a do-nothing statement like Bash or C++, so I made my own
-	private void doNothing() { return; } //p2
+	protected void doNothing() { return; } //p2
 	
 	// Returns greatest common factor of numerator and denominator, for reducing factors
-	private double getGCF() {
+	protected double getGCF() {
 		double a = Math.abs(this.num), b = Math.abs(this.den);
 		//System.out.println("Entering GCF while loop");
 		while (a != b) {
@@ -211,7 +213,7 @@ public class Fraction {
 	}
 	
 	// Reduces the Fraction to the lowest number
-	private void reduce() {
+	protected void reduce() {
 		if (/*this.format == 'f' ||*/ this.den == 1.0) {
 			this.numFormat = this.format;
 		}
@@ -227,14 +229,14 @@ public class Fraction {
 	}
 	
 	// Exits (according to spec) whenever called
-	private void exitInError() { //p2
+	protected void exitInError() { //p2
 		System.out.println("Error in parsing: NULL!");
 		System.exit(0);
 	}
 	
 	// Returns true if both Fractions have the same format
-	private boolean isSameFormat(Fraction f) { return this.format == f.getFormat(); }
-	private boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
+	protected boolean isSameFormat(Fraction f) { return this.format == f.getFormat(); }
+	protected boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
 	
 	// Now for the public methods
 	public char getFormat() { return this.format; }
