@@ -238,6 +238,14 @@ public class Fraction {
 	protected boolean isSameFormat(Fraction f) { return this.format == f.getFormat(); }
 	protected boolean isSameFormat(Fraction a, Fraction b) { return a.getFormat() == b.getFormat(); }
 	
+	//p3
+	// Protected methods to allow FractionWithUnit to change values
+	protected void setNum(double n) { this.num = n; }
+	protected void setDen(double n) { this.den = n; }
+	protected void setFormat (char c) { this.format = c; }
+	protected void setDenFormat (char c) { this.denFormat = c; }
+	protected void setNumFormat (char c) { this.numFormat = c; }
+	
 	// Now for the public methods
 	public char getFormat() { return this.format; }
 	public double getNum() { return this.num; }

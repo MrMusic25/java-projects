@@ -122,12 +122,4 @@ public class Test {
 			if (in.charAt(i) == c) return true;
 		return false;
 	}
-	
-	//p3
-	// Protected methods to allow FractionWithUnit to change values
-	protected void setNum(double n) { this.num = n; }
-	protected void setDen(double n) { this.den = n; }
-	protected void setFormat (char c) { this.format = c; }
-	protected void setDenFormat (char c) { this.denFormat = c; }
-	protected void setNumFormat (char c) { this.numFormat = c; }
 }
