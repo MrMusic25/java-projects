@@ -7,6 +7,7 @@
 public abstract class ArraySort {
 	public String name; // Name of the sorting algorithm
 	public String input; // The original input from the user or program
+	public Object arr[]; // Array of objects to be sorted
 	
 	// Constructors
 	public ArraySort() {
