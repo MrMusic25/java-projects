@@ -4,6 +4,11 @@
    Function: A class that utilizes the bubble sort algorithm
 */
 public class Bubble extends ArraySort {
+	/*             *
+	 *  Variables  *
+	 *             */
+	char type = 'i'; // Indicates the type of the objects being used. f = fraction, d = double, i = int (default)
+	
 	/*                *
 	 *  Constructors  *
 	 *                */
@@ -17,27 +22,38 @@ public class Bubble extends ArraySort {
 		this.name = "Bubble Sort";
 		this.input = s;
 		sanitizeInput();
+		sToObj();
 	}
 	
 	public Bubble(Object[] o) {
 		this.name = "Bubble Sort";
-		this.input = "";
 		this.arr = o;
+		this.input = toString();
 	}
 	
 	/*                              *
 	 *  Completed abstract methods  *
 	 *                              */
 	public String toString() {
+		StringBuilder s = new StringBuilder();
 		
+		for (int i = 0; i < this.arr.length; i++) {
+			s.append(this.arr[i].toString() + " "); // Was worried this might not compile, but it works fine!
+		}
+		s.deleteCharAt(s.length()-1); // Gets rid of final space
+		
+		return s.toString();
 	}
 	
 	public void sortIncr() {
-		
+		for (int i = 0; i < arr.length-1; i ++)
+			for (int j = 1; j < arr.length-1; j++)
+				if (arr[j].compareTo(arr[j-1]) < 0) 
+					swap(j,j-1);
 	}
 	
 	public void sortDecr() {
-		
+		return;
 	}
 	
 	/*                      *
@@ -68,7 +84,45 @@ public class Bubble extends ArraySort {
 	
 	protected void sToObj() {
 		int num = charCount(' '); // Number of digits, using space as delimiter
-	
+		char type; // i for int, d for double, f for fraction
+		
+		// Decide type of object being used
+		if (isPresent('/'))
+			type = 'f';
+		else if (isPresent('.'))
+			type = 'd';
+		else
+			type = 'i';
+		
+		// Make new array with decided data type
+		switch (type) {
+			case 'f':
+				this.arr = new Fraction[num];
+				break;
+			case 'd':
+				this.arr = new Double[num];
+				break;
+			case 'i':
+				this.arr = new Integer[num];
+				break;
+		}
+		
+		// Now, split string and store in array
+		String[] temp = this.input.split(" ");
+		for (int i = 0; i < temp.length; i++) {
+			switch (type) {
+				case 'f':
+					this.arr[i] = new Fraction(temp[i]);
+					break;
+				case 'd':
+					this.arr[i] = Double.parseDouble(temp[i]);
+					break;
+				case 'i':
+					this.arr[i] = Integer.parseInt(temp[i]);
+					break;
+			}
+		}
+		// arr[] is now filled with selected object type, ready for sorting
 	}
 	
 	// Checks if char is present in this.input. Only one instance must be present for true return
@@ -79,16 +133,17 @@ public class Bubble extends ArraySort {
 		return false;
 	}
 	
-	// Adds an object to this.arr
-	protected void add(Object a) {
-		
-	}
-	
 	protected int charCount(char c) {
 		int rtn = 0;
 		for (int i = 0; i < input.length(); i++)
 			if (this.input.charAt(i) == c)
 				rtn++;
 		return rtn;
-	}			
+	}		
+					
+	protected void swap(int a, int b) {
+		Object tmp = arr[a];
+		arr[a] = arr[b];
+		arr[b] = tmp;
+	}
 }
