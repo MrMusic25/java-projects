@@ -1,7 +1,7 @@
 /*
    Name: Kyle Krattiger
    
-   Function: An abstrac class to be used for sorting algorithm classes
+   Function: An abstract class to be used for sorting algorithm classes
    
 */
 public abstract class ArraySort {

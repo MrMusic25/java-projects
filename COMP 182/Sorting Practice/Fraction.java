@@ -282,6 +282,17 @@ public class Fraction {
 		return b.toString();
 	}
 	
+	// Compares two Fraction objects. Works the same as Integer.compare(a,b)
+	public static int compare(Fraction a, Fraction b) { 
+		int val = 999; // Make no assumptions
+		if (a.getNum() / a.getDen() == b.getNum() / b.getDen())
+			val = 0;
+		else if (a.getNum() / a.getDen() < b.getNum() / b.getDen())
+			val = -1;
+		else if (a.getNum() / a.getDen() > b.getNum() / b.getDen())
+			val = 1;
+		return val;
+	}
 	// Returns true if fraction is a fraction AND is improper; false in all other cases
 	public boolean isImproper() { return ( this.format == 'f' && this.num >= this.den ); }
 	

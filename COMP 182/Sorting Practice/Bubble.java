@@ -7,7 +7,7 @@ public class Bubble extends ArraySort {
 	/*             *
 	 *  Variables  *
 	 *             */
-	char type = 'i'; // Indicates the type of the objects being used. f = fraction, d = double, i = int (default)
+	protected char type = 'i'; // Indicates the type of the objects being used. f = fraction, d = double, i = int (default)
 	
 	/*                *
 	 *  Constructors  *
@@ -46,14 +46,43 @@ public class Bubble extends ArraySort {
 	}
 	
 	public void sortIncr() {
-		for (int i = 0; i < arr.length-1; i ++)
-			for (int j = 1; j < arr.length-1; j++)
-				if (arr[j].compareTo(arr[j-1]) < 0) 
-					swap(j,j-1);
+		for (int i = 0; i < arr.length-1; i++)
+			for (int j = 1; j < arr.length-i; j++) {
+				switch (this.type) {
+				case 'f':
+					if (Fraction.compare((Fraction)arr[j],(Fraction)arr[j-1]) < 0) 
+						swap(j,j-1);
+					break;
+				case 'd':
+					if (Double.compare((double)arr[j],(double)arr[j-1]) < 0)
+						swap(j,j-1);
+					break;
+				case 'i':
+					if (Integer.compare((Integer)arr[j],(Integer)arr[j-1]) < 0)
+						swap(j,j-1);
+					break;
+				}
+			}
 	}
 	
 	public void sortDecr() {
-		return;
+		for (int i = 0; i < arr.length-1; i++)
+			for (int j = 1; j < arr.length-i; j++) {
+				switch (this.type) {
+				case 'f':
+					if (Fraction.compare((Fraction)arr[j-1],(Fraction)arr[j]) < 0) 
+						swap(j,j-1);
+					break;
+				case 'd':
+					if (Double.compare((double)arr[j-1],(double)arr[j]) < 0)
+						swap(j,j-1);
+					break;
+				case 'i':
+					if (Integer.compare((Integer)arr[j-1],(Integer)arr[j]) < 0)
+						swap(j,j-1);
+					break;
+				}
+			}
 	}
 	
 	/*                      *
@@ -83,7 +112,7 @@ public class Bubble extends ArraySort {
 	}
 	
 	protected void sToObj() {
-		int num = charCount(' '); // Number of digits, using space as delimiter
+		int num = charCount(' ') + 1; // Number of digits, using space as delimiter
 		char type; // i for int, d for double, f for fraction
 		
 		// Decide type of object being used
