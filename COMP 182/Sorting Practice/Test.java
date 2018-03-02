@@ -6,8 +6,8 @@
 
 public class Test {
 	public static void main(String args[]) {
-		String input = " 1  7  6  2 ";
-		Bubble b = new Bubble(input);
+		String input = " 18  7  69  2 9 40 3   41 6 ";
+		Heap b = new Heap(input);
 		
 		System.out.println("Original array: '" + input + "'");
 		System.out.println("Cleaned input: '" + b.input + "'");
@@ -15,7 +15,7 @@ public class Test {
 		b.sortIncr();
 		System.out.println("Sorted output (increasing): '" + b.toString() + "'");
 		
-		b.sortDecr();
-		System.out.println("Sorted output (decreasing): '" + b.toString() + "'");
+		//b.sortDecr();
+		//System.out.println("Sorted output (decreasing): '" + b.toString() + "'");
 	}
 }

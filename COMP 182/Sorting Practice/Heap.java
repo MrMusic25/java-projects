@@ -46,11 +46,11 @@ public class Heap extends ArraySort {
 	}
 	
 	public void sortIncr() {
-		
+		buildHeap();
 	}
 	
 	public void sortDecr() {
-		
+		return;
 	}
 	
 	/*                      *
@@ -79,6 +79,45 @@ public class Heap extends ArraySort {
 		this.input = s.toString();
 	}
 	
+	protected void percolate(int iAP, int bar) {
+		//Object tmp; // swap
+		int i = iAP;
+		while (2 * i <= bar ) {
+			int child = 2 * i;
+			if (child + i <= bar) {
+				switch (this.type) {
+					case 'f':
+						if (Fraction.compare((Fraction)arr[child+i],(Fraction)arr[child]) < 0) 
+							child++;
+						if (Fraction.compare((Fraction)arr[child],(Fraction)arr[i]) < 0) 
+							swap(child,i);
+						break;
+					case 'd':
+						if (Double.compare((double)arr[child+i],(double)arr[child]) < 0)
+							child++;
+						if (Double.compare((double)arr[child],(double)arr[i]) < 0) 
+							swap(child,i);
+						break;
+					case 'i':
+						if (Integer.compare((Integer)arr[child+i],(Integer)arr[child]) < 0)
+							child++;
+						if (Integer.compare((Integer)arr[child],(Integer)arr[i]) < 0)
+							swap(child,i);
+						break;
+				}
+				i++;
+			}
+			else
+				break;
+			
+		}
+	}
+	
+	protected void buildHeap() {
+		int last = (arr.length - 1) / 2;
+		for (int i = last; i >= 0; i--)
+			percolate(i,arr.length-1);
+	}
 	protected void sToObj() {
 		int num = charCount(' ') + 1; // Number of digits, using space as delimiter
 		char type; // i for int, d for double, f for fraction
