@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.io.*;
 
 public class Log {
+	/* 
+		Class Attributes
+	*/
 	protected String outputFile; // The location of the logfile
 	
 	/*
@@ -18,33 +21,124 @@ public class Log {
 		Error (3) - Problems that may give unintentional results; give user a chance to respond
 		Fatal (4) - Prints to console no matter what; errors that prevent program from continuing
 	*/
-	protected int printLevel = 2;
+	protected int printLevel = 2, defaultLevel = 1;
 	private File logfile;
 	
-	public Log() {
+	/*
+		Constructors
+	*/
+	public Log() throws IOException {
 		// With no log file present, use the current date as a log file
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy-HH:mm:ss");
 		Date date = new Date();
 		this.outputFile = df.format(date);
 		this.outputFile += ".log"; // Adds the extension
 		
-		
+		this.initialize();
 	}
 	
-	private void initialize() throws FileNotFoundException {
+	public Log(String s) throws IOException {
+		this.outputFile = s;
+		// If extension is missing, add .log. Relies on having a 3 or 4-char extension
+		if (s.charAt(s.length()-4) != '.' || s.charAt(s.length()-3) != '.')
+			this.outputFile += ".log";
+		
+		this.initialize();
+	}
+	
+	public Log(File f) throws IOException {
+		this.logfile = f;
+		this.outputFile = f.getName();
+		this.initialize();
+	}
+	
+	/* 
+		Private methods
+	*/
+	private void initialize() throws IOException {
 		// Prepare tmp string
 		String tmp = "*** Initializing log instance, ";
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy at HH:mm:ss");
 		Date date = new Date();
 		
 		tmp += df.format(date);
-		tmp += "! ***"
+		tmp += "! ***";
 		
 		// Check to see if file exists or not, create if not
-		logfile = new File(outputFile);
-		if (!logFile.exists()) {
-			logfile.createNewFile();
+		this.logfile = new File(outputFile);
+		if (!this.logfile.exists()) {
+			this.logfile.createNewFile();
+		}
+		// Make sure file is writeable. Try to change if not.
+		else if (!this.logfile.canWrite()) {
+			if (!this.logfile.setWritable(true))
+				throw new IOException("File " + outputFile + " cannot be written to!");
 		}
 		
+		PrintWriter out = new PrintWriter(this.logfile);
+		out.println(tmp);
+		out.close();
+	}
+	
+	// Returns the text for the given level, as listed above
+	private String getLevelText(int i) {
+		switch(i) {
+			case 0:
+				return "DEBUG";
+			case 1:
+				return "INFO";
+			case 2:
+				return "WARN";
+			case 3:
+				return "ERROR";
+			case 4:
+				return "FATAL";
+			default:
+				return "BAD NUM";
+		}
+	}
+	
+	/* 
+		Public methods
+	*/
+	public void log(String s) throws IOException{ 
+		String w = getLevelText(defaultLevel) + ": " + s;
+		PrintWriter out = new PrintWriter(this.logfile);
+		out.println(w);
+		out.close();
+		
+		if (printLevel <= defaultLevel)
+			System.out.println(w);
+	}
+	
+	public void log(String s, int i) throws IOException {
+		String w = getLevelText(i) + ": " + s;
+		PrintWriter out = new PrintWriter(this.logfile);
+		out.println(w);
+		out.close();
+		
+		if (printLevel <= i || i == 4)
+			System.out.println(w);
+	}
+	
+	/*
+		Data access/manipulation
+	*/
+	public String getName() { return outputFile; }
+	public int getDefaultLevel() { return defaultLevel; }
+	public int getPrintLevel() { return printLevel; }
+	public void setPrintLevel(int i) { this.printLevel = i; }
+	public void setNewFilename(String s) throws IOException {
+		this.outputFile = s;
+		// If extension is missing, add .log. Relies on having a 3 or 4-char extension
+		if (s.charAt(s.length()-4) != '.' || s.charAt(s.length()-3) != '.')
+			this.outputFile += ".log";
+		
+		this.initialize();
+	}
+	public void setNewFile(File f) throws IOException {
+		this.logfile = f;
+		this.outputFile = f.getName();
+		this.initialize();
 	}
 }
