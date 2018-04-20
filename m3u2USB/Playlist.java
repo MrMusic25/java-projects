@@ -67,6 +67,7 @@ public class Playlist {
     */
     public String getFullFileName() { return this.fullFileName; }
     public String getLine(int i) { return this.fileContents[i]; }
+    public String getFileNAme() { return this.playlistFile.getName(); }
     public int length() { return this.fileContents.length; }
     public void setFileName(String s) throws IOException {
         this.fullFileName = s;
