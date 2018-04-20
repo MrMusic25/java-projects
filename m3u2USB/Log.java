@@ -52,6 +52,20 @@ public class Log {
 		this.initialize();
 	}
 	
+	public Log(Log l, boolean initializeLog) throws IOException {
+		this.outputFile = l.getName();
+		this.printLevel = l.getPrintLevel();
+		this.defaultLevel = l.getDefaultLevel();
+		if (outputFile.charAt(outputFile.length()-4) != '.' || outputFile.charAt(outputFile.length()-3) != '.')
+			this.outputFile += ".log";
+		logfile = new File(outputFile);
+		
+		// This is useful when multiple methods use the same log file
+		// Prevents re-initialization of a common logfile
+		if (initializeLog)
+			this.initialize();
+	}
+	
 	/* 
 		Private methods
 	*/
@@ -127,6 +141,7 @@ public class Log {
 	public String getName() { return outputFile; }
 	public int getDefaultLevel() { return defaultLevel; }
 	public int getPrintLevel() { return printLevel; }
+	public void setDefaultLevel(int i) { this.defaultLevel = i; }
 	public void setPrintLevel(int i) { this.printLevel = i; }
 	public void setNewFilename(String s) throws IOException {
 		this.outputFile = s;
