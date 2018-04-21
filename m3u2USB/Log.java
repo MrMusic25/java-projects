@@ -124,7 +124,7 @@ public class Log {
 		out.close();
 		
 		if (printLevel <= defaultLevel)
-			System.out.println(w);
+			System.err.println(w);
 	}
 	
 	public void log(String s, int i) throws IOException {
@@ -134,7 +134,7 @@ public class Log {
 		out.close();
 		
 		if (printLevel <= i || i == 4)
-			System.out.println(w);
+			System.err.println(w);
 	}
 	
 	/*
