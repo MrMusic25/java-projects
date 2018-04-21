@@ -1,3 +1,5 @@
+package com.mrmusic25.log;
+
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -151,6 +153,8 @@ public class Log {
 		
 		this.initialize();
 	}
+	public void verbose() { this.printLevel = 1; }
+	public void superVerbose() { this.printLevel = 0; }
 	public void setNewFile(File f) throws IOException {
 		this.logfile = f;
 		this.outputFile = f.getName();

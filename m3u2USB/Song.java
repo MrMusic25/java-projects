@@ -1,3 +1,6 @@
+package com.mrmusic25.m3u2usb;
+
+import com.mrmusic25.log.*;
 import java.io.*;
 import java.lang.*;
 
@@ -15,6 +18,7 @@ public class Song {
 		None   (n,c) - Files will be output straight to the given folder
 		Artist (b,r) - Artist folder will be preserved
 		Album  (a,l) - Both artist and album folder will be preserved
+		Parent (p,t) - Re-creates entire "Music" directory
 		
 		Invalid chars will be treated as none
 	*/
@@ -151,6 +155,9 @@ public class Song {
 			case 'l':
 				s.append(divider + artist + divider + album + divider + title + '.' + this.extension);
 				break;
+            case 'p':
+            case 't':
+                s.append(divider + parent + divider + artist + divider + album + divider + title + '.' + this.extension);
 			default:
 				s.append(divider + title + '.' + this.extension);
 		}
