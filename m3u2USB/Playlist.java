@@ -65,6 +65,14 @@ public class Playlist {
         this.fileContents = tmp;
     }
     
+    public void outputPlaylist(String outputFile) throws IOException {
+        File out = new File(outputFile);
+        FileWriter f = new FileWriter(out);
+        
+        for (int i = 0; i < fileContents.length; i++)
+            f.append(fileContents[i]);
+        f.close();
+    }
     /*
         Data Access/Manipulation
     */

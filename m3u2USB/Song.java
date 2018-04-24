@@ -30,7 +30,8 @@ public class Song {
 	// This will work for now, make this list modifiable after release
 	public static String allowedExt[] = new String[]{ "mp3" }; // Extensions that can be copied instead of converted, saving time
 	public static String unconvertable[] = new String[]{ "m4p" }; // Songs that will throw an error because of DRM protection, making them unplayable
-	
+
+	public File inputFile = null, outputFile = null; // File for input/output
 	/*
 		Constructors
 	*/
@@ -54,6 +55,7 @@ public class Song {
 		
 		this.fullInputPath = inFile;
 		this.outputFolder = outFolder;
+		this.inputFile = new File(fullInputPath);
 		
 		// Determine folder divider char
 		if (this.fullInputPath.charAt(0) == '/')
@@ -82,6 +84,7 @@ public class Song {
 		
 		this.outputMode = mode;
 		this.fullOutputPath = determineOutput(this.outputFolder);
+		this.outputFile = new File(fullOutputPath);
 	}
 	
 	/*
@@ -168,7 +171,10 @@ public class Song {
         Public Methods
     */
     
-    
+    public void deleteOutputFile() throws IOException {
+        if (!this.outputFile.delete())
+            throw new IOException("Unable to delete file!");
+    }
     
     /*
         Data Access/Manipulation
@@ -213,4 +219,6 @@ public class Song {
     }
     public void swapDivider() { if (this.divider == '/') this.divider = '\\'; else this.divider = '/'; }
     public void setConversion(boolean b) { this.convertSong = b; };
+    public boolean inputFileExists() { return this.inputFile.exists(); }
+    public boolean outputFileExists() { return this.outputFile.exists(); }
 }
