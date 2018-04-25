@@ -1,4 +1,4 @@
-package com.mrmusic25.log;
+//package com.mrmusic25.log;
 
 import java.util.Date;
 import java.text.DateFormat;
@@ -42,7 +42,7 @@ public class Log {
 	public Log(String s) throws IOException {
 		this.outputFile = s;
 		// If extension is missing, add .log. Relies on having a 3 or 4-char extension
-		if (s.charAt(s.length()-4) != '.' || s.charAt(s.length()-3) != '.')
+		if (!(s.charAt(s.length()-4) == '.' || s.charAt(s.length()-3) == '.'))
 			this.outputFile += ".log";
 		
 		this.initialize();
@@ -74,7 +74,7 @@ public class Log {
 	private void initialize() throws IOException {
 		// Prepare tmp string
 		String tmp = "*** Initializing log instance, ";
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy at HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm:ss");
 		Date date = new Date();
 		
 		tmp += df.format(date);
@@ -91,8 +91,9 @@ public class Log {
 				throw new IOException("File " + outputFile + " cannot be written to!");
 		}
 		
-		PrintWriter out = new PrintWriter(this.logfile);
-		out.println(tmp);
+		//this.log(tmp);
+		FileWriter out = new FileWriter(this.logfile);
+		out.append(tmp);
 		out.close();
 	}
 	
@@ -117,10 +118,10 @@ public class Log {
 	/* 
 		Public methods
 	*/
-	public void log(String s) throws IOException{ 
+	public void log(String s) throws IOException { 
 		String w = getLevelText(defaultLevel) + ": " + s;
-		PrintWriter out = new PrintWriter(this.logfile);
-		out.println(w);
+		FileWriter out = new FileWriter(this.logfile);
+		out.append(w);
 		out.close();
 		
 		if (printLevel <= defaultLevel)

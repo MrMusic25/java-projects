@@ -1,6 +1,8 @@
-package com.mrmusic25.m3u2usb;
+//package com.mrmusic25.m3u2usb;
 
-import com.mrmusic25.log.*;
+//import com.mrmusic25.log.*;
+//import com.mrmusic25.song.*;
+//import com.mrmusic25.playlist.*;
 import java.util.Scanner;
 import java.lang.*;
 import java.io.*;
@@ -9,18 +11,18 @@ public class M3U2USB {
 	/*
         Global Variables
 	*/
-	public boolean copyDRM = true; // How to handle songs with DRM. true, just copy them over; false, skip the song and notify user
-	public char preserveMode = 'n'; // Indicates the level of folder preservation; None by default (see displayHelp() for more info)
-	public boolean noNumbers = false; // Tells program to delete numbers in fron of song name, off by default
+	public static boolean copyDRM = true; // How to handle songs with DRM. true, just copy them over; false, skip the song and notify user
+	public static char preserveMode = 'n'; // Indicates the level of folder preservation; None by default (see displayHelp() for more info)
+	public static boolean noNumbers = false; // Tells program to delete numbers in fron of song name, off by default
 	public static Log logger; // Can't be initialized in the class, but it can be declared!
-	public String inputFile = null, outputFolder = null; // Intialized with null so the program knows if they're not given a value
-	public char divider = '\\'; // Same as Song.java, used to denote OS
-	public String validPreserveModes[] = new String[]{ "a", "album", "b", "artist", "n", "none", "p", "parent" };
+	public static String inputFile = null, outputFolder = null; // Intialized with null so the program knows if they're not given a value
+	public static char divider = '\\'; // Same as Song.java, used to denote OS
+	public static String validPreserveModes[] = new String[]{ "a", "album", "b", "artist", "n", "none", "p", "parent" };
 	
 	/*
         Main
     */
-	public void main(String args[]) {
+	public static void main(String args[]) {
 		// Using this program assume you have a music folder with the following structure:
 		// ../Music/<Artist>/<Album>/<Song>
 		
@@ -84,21 +86,21 @@ public class M3U2USB {
         System.out.println(help);
     }
     
-    public String toLower(String s) {
+    public static String toLower(String s) {
         StringBuilder b = new StringBuilder(s), c = new StringBuilder();
         for (int i = 0; i < b.length(); i++)
             c.append(Character.toLowerCase(b.charAt(i)));
         return c.toString();
     }
     
-    public boolean contains(String s, String a[]) {
+    public static boolean contains(String s, String a[]) {
         for (int i = 0; i < a.length; i++)
             if (s.equals(a[i]))
                 return true;
         return false;
 	}
     
-    public void processArgs(String args[]) throws IOException {
+    public static void processArgs(String args[]) throws IOException {
         int i = args.length, j = 0;
         boolean override = false;
         while (i > 0) {

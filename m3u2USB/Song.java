@@ -1,6 +1,6 @@
-package com.mrmusic25.m3u2usb;
+//package com.mrmusic25.song;
 
-import com.mrmusic25.log.*;
+//import com.mrmusic25.log.*;
 import java.io.*;
 import java.lang.*;
 
