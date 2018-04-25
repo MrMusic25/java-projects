@@ -176,6 +176,27 @@ public class Song {
             throw new IOException("Unable to delete file!");
     }
     
+	public String getLocalizedName() {
+		StringBuilder b = new StringBuilder();
+		switch(outputMode) {
+			case 'p':
+			case 't':
+				b.append("Music" + divider + this.artist + divider + this.album + divider + this.title + "." + this.extension);
+				break;
+			case 'b':
+			case 'r':
+				b.append(this.artist + divider + this.title + "." + this.extension);
+				break;
+			case 'a':
+			case 'l':
+				b.append(this.artist + divider + this.album + divider + this.title + "." + this.extension);
+				break;
+			default: // None is the default
+				b.append(this.title + "." + this.extension);
+		}
+		return b.toString();
+	}
+	
     /*
         Data Access/Manipulation
     */

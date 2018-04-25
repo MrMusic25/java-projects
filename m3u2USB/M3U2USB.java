@@ -20,24 +20,44 @@ public class M3U2USB {
 	/*
         Main
     */
-	public static void main(String args[]) {
+	public void main(String args[]) {
 		// Using this program assume you have a music folder with the following structure:
 		// ../Music/<Artist>/<Album>/<Song>
 		
 		try {
-        logger = new Log("m3u2usb.log");
+			logger = new Log("m3u2usb.log");
         } 
         catch(IOException e) {
             System.err.println("FATAL: Log could not be initialized! Exiting in failure! " + e.getMessage());
             System.exit(1);
         }
 		
-		displayHelp();
+		// Process arguments
+		if(args.length < 1)
+			displayHelp("No arguments given, program cannot continue!");
+		else {
+			try {
+				processArgs(args);
+			}
+			catch(IOException e) {
+				System.err.println("Error thrown from processArgs()!: " + e.getMessage());
+			}
+		}
+		
 	}
 	
 	/*
         Methods
     */
+	public static void displayHelp(String s) { // Overloaded method for logging a fatal message before displaying help
+		try {
+			logger.log(s,4);
+		} catch(IOException e) {
+			System.err.println("Log threw an error!: " + e.getMessage());
+		}
+		displayHelp();
+	}
+	
     public static void displayHelp() {
         String help = "M3U2USB - A program to convert and centralize music files in an M3U (or text based) playlist\n\n"
                     + "Usage: ./M3U2USB [options] <inputFile> <outputFolder>\n"
