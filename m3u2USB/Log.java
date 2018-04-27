@@ -73,12 +73,12 @@ public class Log {
 	*/
 	private void initialize() throws IOException {
 		// Prepare tmp string
-		String tmp = "*** Initializing log instance, ";
+		String tmp = "\n*** Initializing log instance, ";
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm:ss");
 		Date date = new Date();
 		
 		tmp += df.format(date);
-		tmp += "! ***";
+		tmp += "! ***\n";
 		
 		// Check to see if file exists or not, create if not
 		this.logfile = new File(outputFile);
@@ -92,7 +92,7 @@ public class Log {
 		}
 		
 		//this.log(tmp);
-		FileWriter out = new FileWriter(this.logfile);
+		PrintWriter out = new PrintWriter(new FileOutputStream(this.logfile,true));
 		out.append(tmp);
 		out.close();
 	}
@@ -119,8 +119,8 @@ public class Log {
 		Public methods
 	*/
 	public void log(String s) throws IOException { 
-		String w = getLevelText(defaultLevel) + ": " + s;
-		FileWriter out = new FileWriter(this.logfile);
+		String w = getLevelText(defaultLevel) + ": " + s + "\n";
+		PrintWriter out = new PrintWriter(new FileOutputStream(this.logfile,true));
 		out.append(w);
 		out.close();
 		
@@ -129,9 +129,9 @@ public class Log {
 	}
 	
 	public void log(String s, int i) throws IOException {
-		String w = getLevelText(i) + ": " + s;
-		PrintWriter out = new PrintWriter(this.logfile);
-		out.println(w);
+		String w = getLevelText(i) + ": " + s + "\n";
+		PrintWriter out = new PrintWriter(new FileOutputStream(this.logfile,true));
+		out.append(w);
 		out.close();
 		
 		if (printLevel <= i || i == 4)

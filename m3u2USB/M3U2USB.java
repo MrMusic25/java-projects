@@ -37,6 +37,7 @@ public class M3U2USB {
 		// Process arguments
 		if(args.length < 1)
 			displayHelp("No arguments given, program cannot continue!");
+			System.exit(1);
 		else {
 			try {
 				processArgs(args);

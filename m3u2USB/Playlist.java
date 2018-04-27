@@ -67,10 +67,10 @@ public class Playlist {
     
     public void outputPlaylist(String outputFile) throws IOException {
         File out = new File(outputFile);
-        FileWriter f = new FileWriter(out);
+        PrintWriter f = new PrintWriter(new FileOutputStream(out,true));
         
         for (int i = 0; i < fileContents.length; i++)
-            f.append(fileContents[i]);
+            f.append(fileContents[i] + "\n");
         f.close();
     }
     /*
