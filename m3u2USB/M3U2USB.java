@@ -18,14 +18,17 @@ public class M3U2USB {
 	public static String inputFile = null, outputFolder = null; // Intialized with null so the program knows if they're not given a value
 	public static char divider = '\\'; // Same as Song.java, used to denote OS
 	public static String validPreserveModes[] = new String[]{ "a", "album", "b", "artist", "n", "none", "p", "parent" };
+	public static Playlist inList = null, outList = null;
+	public static Song songs[] = null;
 	
 	/*
         Main
     */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException { // This is mostly to make compilation easier; important exceptions will be caught with a try-catch statement
 		// Using this program assume you have a music folder with the following structure:
 		// ../Music/<Artist>/<Album>/<Song>
 		
+		// Begin by initializing the log in the local folder
 		try {
 			logger = new Log("m3u2usb.log");
         } 
@@ -35,9 +38,10 @@ public class M3U2USB {
         }
 		
 		// Process arguments
-		if(args.length < 1)
+		if (args.length < 1) {
 			displayHelp("No arguments given, program cannot continue!");
 			System.exit(1);
+        }
 		else {
 			try {
 				processArgs(args);
@@ -47,6 +51,38 @@ public class M3U2USB {
 			}
 		}
 		
+		// Make sure inputFile and outputFolder are not options
+		if (inputFile.charAt(0) == '-') {
+            logger.log("Input filename " + inputFile + " is invalid! Exiting, please fix and re-run!",4);
+            displayHelp();
+            System.exit(1);
+        }
+        else if (outputFolder.charAt(0) == '-') {
+            logger.log("Output folder " + outputFolder + " is invalid! Exiting, please fix and re-run!",4);
+            displayHelp();
+            System.exit(1);
+        }
+        
+        // Time to import playlist
+        try {
+            inList = new Playlist(inputFile);
+        } catch (IOException e) {
+            logger.log("Input file " + inputFile + " could not be accessed! Exiting...",4);
+            displayHelp();
+            System.exit(1);
+        }
+        
+        // Now, start making the songs and prepare for conversion
+        songs = new Song[inList.getNumSongs()];
+        outList = new Playlist(outFolder + divider + inList.getFilename());
+        for (int i = 0; i < inList.length(); i++) {
+            if (inlist.getLine(i).charAt(0) != '#' && inlist.getLine(i).charAt(0) != ' ') {
+                songs[i] = new Song(inList.getLine(i),outFolder,"mp3",preserveMode,logger,noNumbers);
+                
+            }
+            else
+                outList.append(inList.getLine(i));
+        }
 	}
 	
 	/*
@@ -179,20 +215,26 @@ public class M3U2USB {
                         }
                         j++;
                     }
+                    break;
+                default:
+                    logger.log("Unknown option " + args[j] + " given! Exiting, please fix and re-run!",4);
+                    displayHelp();
+                    System.exit(1);
                 }//switch
                 j++;
                 i--;
+                
+                
+                if (args.length < 2) {
+                    logger.log("Two arguments are required, " + args.length + " were given! Please fix and re-run!",4);
+                    displayHelp();
+                    System.exit(1);
+                }
+                else if (args.length == 2) {
+                    inputFile = args[j];
+                    outputFolder = args[j+1]; // Making assumptions, but will be error checked later
+                    return;
+                }
             }//while
-        
-        
-        if (args.length < 2) {
-            logger.log("Two arguments are required, " + args.length + " were given! Please fix and re-run!",4);
-            displayHelp();
-            System.exit(1);
-        }
-        else {
-            inputFile = args[j];
-            outputFolder = args[j+1]; // Making assumptions, but will be error checked later
-        }
     }//processArgs()
 }

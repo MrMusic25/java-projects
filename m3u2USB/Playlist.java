@@ -78,11 +78,18 @@ public class Playlist {
     */
     public String getFullFileName() { return this.fullFileName; }
     public String getLine(int i) { return this.fileContents[i]; }
-    public String getFileNAme() { return this.playlistFile.getName(); }
+    public String getFilename() { return this.playlistFile.getName(); }
     public int length() { return this.fileContents.length; }
     public void setFileName(String s) throws IOException {
         this.fullFileName = s;
         this.playlistFile = new File(this.fullFileName);
         this.importContents();
+    }
+    public int getNumSongs() { 
+        int i = 0;
+        for (int j = 0; j < fileContents.length; j++)
+            if (fileContents[j].charAt(0) != '#' && fileContents[j].charAt(0) != ' ')
+                i++;
+        return i; // Effectively returns number of lines that aren't blank or comments
     }
 }
