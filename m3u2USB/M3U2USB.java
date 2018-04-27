@@ -74,11 +74,11 @@ public class M3U2USB {
         
         // Now, start making the songs and prepare for conversion
         songs = new Song[inList.getNumSongs()];
-        outList = new Playlist(outFolder + divider + inList.getFilename());
+        outList = new Playlist(outputFolder + divider + inList.getFilename());
         for (int i = 0; i < inList.length(); i++) {
-            if (inlist.getLine(i).charAt(0) != '#' && inlist.getLine(i).charAt(0) != ' ') {
-                songs[i] = new Song(inList.getLine(i),outFolder,"mp3",preserveMode,logger,noNumbers);
-                
+            if (inList.getLine(i).charAt(0) != '#' && inList.getLine(i).charAt(0) != ' ') {
+                songs[i] = new Song(inList.getLine(i),outputFolder,"mp3",preserveMode,logger,noNumbers);
+                outList.append(songs[i].getLocalizedName());
             }
             else
                 outList.append(inList.getLine(i));

@@ -73,6 +73,19 @@ public class Playlist {
             f.append(fileContents[i] + "\n");
         f.close();
     }
+    
+    public void outputPlaylist() throws IOException {
+        // Be warned! Running this will OVERWRITE the given file!
+        if (this.playlistFile.exists()) 
+            this.playlistFile.delete();
+        this.playlistFile.createNewFile();
+        
+        PrintWriter f = new PrintWriter(new FileOutputStream(this.playlistFile,true));
+        for (int i = 0; i < fileContents.length; i++)
+            f.append(fileContents[i] + "\n");
+        f.close();
+    }
+    
     /*
         Data Access/Manipulation
     */
