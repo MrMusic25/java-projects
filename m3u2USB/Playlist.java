@@ -93,6 +93,7 @@ public class Playlist {
     public String getLine(int i) { return this.fileContents[i]; }
     public String getFilename() { return this.playlistFile.getName(); }
     public int length() { return this.fileContents.length; }
+    public String getAbsolutePath() { return this.playlistFile.getAbsolutePath(); }
     public void setFileName(String s) throws IOException {
         this.fullFileName = s;
         this.playlistFile = new File(this.fullFileName);

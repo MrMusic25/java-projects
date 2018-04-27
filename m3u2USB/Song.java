@@ -197,6 +197,27 @@ public class Song {
 		return b.toString();
 	}
 	
+	public void convert() throws IOException {
+        String parentFolder = outputFolder;
+        switch(outputMode) {
+            case 'b':
+            case 'r':
+                parentFolder += divider + artist;
+                break;
+            case 'a':
+            case 'l':
+                parentFolder += divider + artist + divider + album;
+                break;
+            case 'p':
+            case 't':
+                parentFolder += divider + "Music" + divider + artist + divider + album;
+                break;
+            default:
+                //do nothing
+        }
+        File tmp = new File(parentFolder);
+        tmp.mkdirs(); // Recursively creates missing directories, saves me a bunch of time. Score 1 for Java!
+	}
     /*
         Data Access/Manipulation
     */

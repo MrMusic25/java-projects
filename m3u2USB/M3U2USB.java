@@ -72,6 +72,10 @@ public class M3U2USB {
             System.exit(1);
         }
         
+        // Make sure divider is correct
+        if (inList.getAbsolutePath().charAt(0) == '/')
+            divider = '/'; // Find a more dynamic way to do this later; for now, it works
+        
         // Now, start making the songs and prepare for conversion
         songs = new Song[inList.getNumSongs()];
         outList = new Playlist(outputFolder + divider + inList.getFilename());
